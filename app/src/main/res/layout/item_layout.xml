@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/textViewNumeroItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:textSize="14sp"
+        tools:text="Item 1" />
+
+    <TextView
+        android:id="@+id/textViewNomeItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewNumeroItem"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Novo Item" />
+
+    <TextView
+        android:id="@+id/textViewQuantidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewNomeItem"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        tools:text="Quantidade: 10" />
+
+    <TextView
+        android:id="@+id/textViewPreco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewNomeItem"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        tools:text="Preço: R$ 5,00" />
+
+    <TextView
+        android:id="@+id/textViewDescricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewQuantidade"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:textSize="14sp"
+        tools:text="Descrição do produto" />
+
+    <ImageButton
+        android:id="@+id/buttonRemoverItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/textViewPreco"
+        android:layout_alignParentEnd="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Remover item"
+        android:src="@android:drawable/ic_menu_delete" />
+</RelativeLayout>
