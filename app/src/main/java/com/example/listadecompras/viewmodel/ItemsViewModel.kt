@@ -11,9 +11,11 @@ import com.example.listadecompras.model.toEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 class ItemsViewModel(
     private val database: ItemsDatabase ): ViewModel() {
     val itemsLiveData = MutableLiveData<List<ItemModel>>()
+    val searchResults = MutableLiveData<List<ItemModel>>()
 
     fun addItem(name: String, itemNumber: Int, quantity: Int, price: Double, description: String) { viewModelScope.launch(Dispatchers.IO) {
         val entity = ItemEntity(
@@ -39,6 +41,32 @@ class ItemsViewModel(
         }
         itemsLiveData.postValue(result)
     }
+
+    fun searchByName(query: String) {
+        viewModelScope.launch {
+            val result = database.itemsDao().searchByName(query)
+            searchResults.postValue(
+                result.map {
+                    ItemModel(
+                        it.id,
+                        it.name,
+                        it.itemNumber,
+                        it.quantity,
+                        it.price,
+                        it.description,
+                        { removeItem(it) }
+                    )
+                }
+            )
+        }
+    }
+
+    fun refresh() { //test
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchAll()
+        }
+    }
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             fetchAll()
