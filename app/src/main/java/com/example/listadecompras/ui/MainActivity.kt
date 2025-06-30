@@ -1,21 +1,27 @@
-package com.example.listadecompras
+package com.example.listadecompras.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listadecompras.viewmodel.ItemsViewModel
+import com.example.listadecompras.R
+import com.example.listadecompras.viewmodel.ItemsViewModelFactory
 
 class MainActivity : AppCompatActivity() {
+    val viewModel: ItemsViewModel by viewModels {
+        ItemsViewModelFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val itemsAdapter = ItemAdapter()
-
+        val itemsAdapter = ItemAdapter { item ->
+            viewModel.removeItem(item) // ViewModel que chama Repository -> DAO
+        }
         recyclerView.adapter = itemsAdapter
 
         val button = findViewById<Button>(R.id.button)
@@ -42,19 +48,21 @@ class MainActivity : AppCompatActivity() {
                 editTextPrice.error = "Preencha o preço"
                 return@setOnClickListener
             }
-            val item = ItemModel(
-                name= editTextName.text.toString(),
-                itemNumber = editTextItemNumber.text.toString().toIntOrNull() ?: 0,
-                quantity = editTextQuantity.text.toString().toIntOrNull() ?: 0,
-                price = editTextPrice.text.toString().toDoubleOrNull() ?: 0.0,
-                description = editTextDescription.text.toString()
-            )
-            itemsAdapter.addItem(item)
+
+            viewModel.addItem(editTextName.text.toString(),
+                editTextItemNumber.text.toString().toInt(),
+                editTextQuantity.text.toString().toInt(),
+                editTextPrice.text.toString().toDouble(),
+                editTextDescription.text.toString())
+
             editTextName.text.clear()
             editTextItemNumber.text.clear()
             editTextQuantity.text.clear()
             editTextPrice.text.clear()
             editTextDescription.text.clear()
+        }
+        viewModel.itemsLiveData.observe(this) {
+                items ->itemsAdapter.updateItems(items)
         }
     }
 }
